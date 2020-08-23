@@ -1,0 +1,12 @@
+{
+   "username":"Test",
+   "email":"test@orange.fr",
+   "password":"123456Aa"
+
+}
+
+{
+   "email":"test@orange.fr",
+   "password":"123456Aa"
+
+}
