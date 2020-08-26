@@ -83,41 +83,30 @@ exports.delete=(req,res,next)=>{
                   Message.findAll({where: {userId:req.body.id}})
                     .then(messagesfound=>{
                       console.log("Test recupe messages :");
-                      console.log(messagesfound);
-                      for(let message in messagesfound){
-                        const mes =messagesfound[message];
+                      console.log("messagesfound");
+                      for(let messages in messagesfound){
+                        const mes =messagesfound[messages];
                         const filename=mes.dataValues.file.split('/images/')[1];
-                        //messageId=mes.dataValues.id;
                         console.log('Test');
                         console.log(filename);
                         fs.unlink(`images/${filename}`,()=>{//Code identique que pour l'actualisation avec nouvelle image :  ne pas laisser trainer de vieilles photos sur le serveur
                               console.log('Test suppression image');
-                              console.log('Test de fin de journée !!')
                               //On supprime le message
-                             // Message.destroy({where:{ userId: req.body.id }})
-
-                             //.then(() => res.status(200).json({message : 'Message supprimé'}) )
+                              Message.destroy({where:{ userId: req.body.id }})
+                         
+                              .then(() => console.log("message supprimé"))
                                       
-                              //.catch(() => console.log('test erreur lors suppression !' ))
+                              .catch(error => res.status(400).json({ error }));
                             });
-
                       };
 
                   
                     })
                     .catch(error=>res.status(500).json({error}));
-                    User.findOne({where:{id:req.body.id, email:req.body.email}})
-                    .then(userfound=>{
-                      if(!userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
-                        res.status(400).json({error : 'Cet utilisateur n\'existe pas !'});
-                     }
-   
-                      User.destroy({where : {email:req.body.email}})
-                      .then(()=>res.status(200).json({message :"Utilisateur supprimé"}))
-                       .catch(error=> res.status(400).json({error}));
-                    
-                    })
-     
+
+                User.destroy({where : {id:req.body.id}})
+                  .then(()=>res.status(200).json({message :"Utilisateur supprimé"}))
+                .catch(error=> res.status(400).json({error}));
               }
           })
           .catch(error=>res.status(500).json({error}));

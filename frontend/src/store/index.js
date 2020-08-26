@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 Vue.use(Vuex)
 
 export default new Vuex.Store({

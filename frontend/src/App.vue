@@ -6,22 +6,28 @@
           <router-link to="/">Home | </router-link>
         </li>
         <li>  
-          <router-link to="/inscription">Inscription | </router-link>
+          <router-link to="/inscription" v-if="cookie==false">Inscription | </router-link>
         </li>
         <li >
-          <router-link to="/authentification">Authentification | </router-link>
+          <router-link to="/authentification" v-if="!cookie">Authentification | </router-link>
         </li>
         <li>
-          <router-link to="/listing">Tous les Messages | </router-link>
+          <router-link to="/choixModeration" v-if="cookie">La sélection de la Modération | </router-link>
         </li>
         <li>
-          <router-link to="/creation">Créer un message | </router-link>
+          <router-link to="/listing" v-if="cookie">Tous les Messages | </router-link>
+        </li>
+        <li>
+          <router-link to="/creation" v-if="cookie">Créer un message | </router-link>
+        </li>
+        <li>
+          <router-link to="/perso" v-if="cookie">Espace Perso | </router-link>
         </li>
         <li>
           <router-link to="/about">About | </router-link>
         </li>
         <li>
-          <button type="button" class="btn btn-danger" @click="disconnect">Déconnexion 👋</button>
+          <button type="button" class="btn btn-danger" @click="disconnect" v-if="cookie">Déconnexion </button>
         </li>
       </ul>
     </div>
@@ -29,22 +35,33 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import VueCookies from 'vue-cookies'
 export default {
-  computed: {
-    ...mapState(["user"])
+  data(){
+    return{
+      cookie:''
+      
+    };
   },
   methods: {
     disconnect() {
       // Pour se déconnecter, On vide le localStorage, on actualise la page et on redirige vers la page d'authentification
-      localStorage.clear();
-     
-      this.$router.push({ path: '/inscription', })
+      //localStorage.clear();
+      VueCookies.remove("jwtToken");
+      VueCookies.remove("userId");
+      VueCookies.remove("isAdmin");
+      document.location.href = "/";
 
         
            
           }
+  },mounted(){
+    if(VueCookies.isKey("jwtToken")){
+      this.cookie=true;
+    }else{
+      this.cookie=false;
     }
+  }
 };
 </script>
 <style lang="scss">

@@ -1,32 +1,32 @@
 <template>
-  <div>
-    <form class="w-75 align-items-center form-block d-flex m-auto shadow rounded">
+  <div class="container">
+    <form class=" row">
       <div
-        class="form-block--left d-flex flex-column justify-content-center block-demi-container p-3 text-right align-self-stretch"
+        class="col-lg-6"
       >
-        <img class="logo align-self-end" src="../assets/images/icon.svg" alt="Logo Groupomania" />
+        <img class="logo" src="../assets/images/icon.svg" alt="Logo Groupomania" />
         <p>
-          <small>
+      
             Vous avez déjà un compte,
             <router-link class="redirection-authentification" to="/authentification">Connectez-vous</router-link>
-          </small>
+     
         </p>
       </div>
-      <div class="block-demi-container p-3">
+      <div class="col-lg-6 text-align">
         <div class="form-group">
           <label for="inputEmail">Email Groupomania</label>
-          <input type="email" class="form-control" id="inputEmail" v-model="dataInscription.email" />
+          <input type="email" class="form-control" id="inputEmail" v-model="dataInscription.email" placeholder="Votre adresse mail" required/>
         </div>
         <div class="form-group">
           <label for="inputUsername">Username</label>
-          <input type="text" class="form-control" id="inputUsername" v-model="dataInscription.username" />
+          <input type="text" class="form-control" id="inputUsername" v-model="dataInscription.username" placeholder="Un surnom compris entre 5 et 20 caractères" required/>
         </div>
         <div class="form-group">
           <label for="inputPassword">Password</label>
-          <input type="password" class="form-control" id="inputPassword" v-model="dataInscription.password"/>
+          <input type="password" class="form-control" id="inputPassword" v-model="dataInscription.password" required placeholder="Entre 4 et 8 caractères 1minuscule, 1majuscule et 1 chiffre mini !" />
         </div>
         <p class="form__message">{{msg}}</p>
-         <button @click.prevent="EnvoiInscription" type="submit" class="btn btn-danger mb-3 mt-3">Créer mon compte 👌</button>
+         <button @click.prevent="EnvoiInscription" type="submit" class="btn btn-danger mb-3 mt-3" >Créer mon compte</button>
       </div>
     </form>
   </div>
@@ -65,7 +65,7 @@ export default {
           this.msg ="Votre compte a été correctement crée. Vous allez être redirigé vers la page de connexion!";
           setTimeout(function () {
             document.location.href = "/authentification";
-          }, 5000); // bascule automatique vers la page de connexion pour optin
+          }, 5000); 
           })
           .catch(error => console.log(error));
       } else {
@@ -77,4 +77,17 @@ export default {
 </script>
 
 <style lang="scss">
+.text-align{
+  text-align:center;
+}
+.form-control{
+  text-align:center;
+}
+.col-lg-6{
+  border :2px solid black;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+}
 </style>

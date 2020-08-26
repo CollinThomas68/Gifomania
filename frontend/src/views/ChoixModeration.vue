@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card text-center m-3">
-            <h3>Tous les gifs de la communauté !</h3>
+            <h3>La sélection de la modération !</h3>
         </div>
             
         <div class="card-body">
@@ -21,9 +21,6 @@
 </template>
 
 <script>
-// an example array of items to be paged
-const jwtToken=JSON.parse(localStorage.getItem("jwtToken"))
-console.log(jwtToken)
 import VueCookies from 'vue-cookies'
 import axios from "axios";
 export default {
@@ -53,7 +50,7 @@ export default {
                 }, 5000); 
               }
         axios
-    .get("http://localhost:3000/api/message/listing",{
+    .get("http://localhost:3000/api/message/choixModeration",{
       headers:{
         Authorization: "Bearer " + JSON.parse(this.jwtToken)
       }

@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Home from '../views/Home.vue'
+import Creation from '../views/Creation.vue'
+import Message from '../views/Message.vue'
+import ChoixModeration from'../views/ChoixModeration.vue'
 
 Vue.use(VueRouter)
+
 
   const routes = [
   {
@@ -20,7 +25,11 @@ Vue.use(VueRouter)
     name: 'Authentification',
     component: () => import('../views/Authentification.vue')
   },
-
+  {
+    path: '/choixModeration',
+    name: 'ChoixModeration',
+    component: ChoixModeration
+  },
    {
   path: '/listing',
   name: 'Listing',
@@ -32,10 +41,15 @@ Vue.use(VueRouter)
   component: () => import('../views/Perso.vue')
   },
   {
-    path: '/creation',
-    name: 'Creation',
-    component: () => import('../views/Creation.vue')
-    },
+  path: '/creation',
+  name: 'Creation',
+  component: Creation
+  },
+  {
+    path: '/message/:id',
+    name: 'Message',
+    component: Message
+  },
   {
     path: '/about',
     name: 'About',
@@ -47,7 +61,7 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
-
+  mode:'history',
   routes
 })
 
