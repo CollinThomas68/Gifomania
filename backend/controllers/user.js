@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const sequelize = require('../db.js');
 const fs = require('fs');
-
+const jwtUtils = require('../utils/jwtUtils');
 
 
 
@@ -54,7 +54,128 @@ exports.authentification = (req,res,next)=>{
     .catch(error=> res.status(500).json({ error}));
 };
 
+exports.perso = (req,res,next)=>{
+  const User = userModele(sequelize);
+  var headerAuth  = req.headers['authorization'];
+  var Id      = jwtUtils.getUserId(headerAuth);
+  console.log('Test userId');
+  console.log(Id);
+      if(Id<0){
+        res.status(400).json(({'error':'wrong token'}))
+      }
+      User.findOne({
+        attributes:['id','username','email','isAdmin'],
+        where:{id:Id}
+      }).then(user=>res.status(200).json(user))
+      .catch(error=> res.status(400).json({'message':'Utilisateur non trouvé'}))
+}; 
 
+exports.verif = (req,res,next)=>{
+  const User = userModele(sequelize);
+  var headerAuth  = req.headers['authorization'];
+  var Id      = jwtUtils.getUserId(headerAuth);
+  console.log(req.params);
+  console.log(Id);
+  console.log(req.body);
+
+  if(Id<0){
+
+    res.status(400).json(({'error':'Mauvais token'}))
+    }
+    User.findOne({where:{id:Id,email:req.body.emailCompte}})
+    .then(userfound=>{
+      if(!userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
+        res.status(400).json({error : 'Cet utilisateur n\'existe pas !'});
+      }
+
+        console.log(userfound);
+        bcrypt.compare(req.body.passwordCompte,userfound.password)//On compare le hash du password saisi par l'utilisateur et celui stocké dans la base
+        .then(valid=>{
+            if(!valid){
+              return res.status(401).json({error:'Mot de passe incorrect'});//erreur si les hash ne correspondent pas
+            }else{
+                  res.status(200).json(userfound);
+            }
+        })
+        .catch(error=>res.status(500).json({error}));
+      
+      
+        })
+    .catch(error=>res.status(500).json({error}));
+};
+
+exports.suppression=(req,res,next)=>{
+  const User = userModele(sequelize);
+  const Message = messageModele(sequelize);
+  var headerAuth  = req.headers['authorization'];
+  var Id      = jwtUtils.getUserId(headerAuth);
+  if(Id<0){
+    res.status(400).json(({'error':'wrong token'}))
+    }
+    User.findOne({where:{id:Id}})
+    .then(userfound=>{
+      if(!userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
+        res.status(400).json({error : 'Cet utilisateur n\'existe pas !'});
+      }
+      else{
+                  Message.findAll({where: {userId:Id}})
+                    .then(messagesfound=>{
+                      console.log("Test recupe messages :");
+                      console.log(messagesfound);
+                      for(let message in messagesfound){
+                        const mes =messagesfound[message];
+                        const filename=mes.dataValues.file.split('/images/')[1];
+                        //messageId=mes.dataValues.id;
+                        console.log('Test');
+                        console.log(filename);
+                        fs.unlink(`images/${filename}`,()=>{//Code identique que pour l'actualisation avec nouvelle image :  ne pas laisser trainer de vieilles photos sur le serveur
+                              console.log('Test suppression image');
+                              console.log('Test de fin de journée !!')
+                            });
+                      };
+                    })
+                    .catch(error=>res.status(500).json({error}));
+                    User.findOne({where:{id:Id}})
+                    .then(userfound=>{
+                      if(!userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
+                        res.status(400).json({error : 'Cet utilisateur n\'existe pas !'});
+                     }
+                      User.destroy({where : {id:Id}})
+                      .then(()=>res.status(200).json({message :"Utilisateur supprimé"}))
+                       .catch(error=> res.status(400).json({error}));                   
+                    })  
+                  
+                    .catch(error=>res.status(500).json({error}));
+        }
+      })
+    .catch(error=>res.status(500).json({error}));
+};
+
+exports.modifmail = (req,res,next)=>{
+  const User = userModele(sequelize);
+  var headerAuth  = req.headers['authorization'];
+  var Id      = jwtUtils.getUserId(headerAuth);
+  console.log(req.params);
+  console.log(Id);
+  console.log(req.body);
+
+  if(Id<0){
+
+    res.status(400).json(({'error':'Mauvais token'}))
+    }
+    User.findOne({where:{id:Id,email:req.body.emailActuel}})
+    .then(userfound=>{
+      if(!userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
+        res.status(400).json({error : 'Cet utilisateur n\'existe pas !'});
+      }
+      User.update ({email : req.body.emailNouveau},{where:{id:Id}})
+      .then(() => res.status(200).json({message: 'Votre demande a bien été prise en compte!'}))
+      .catch(error => res.status(404).json({ error }));
+      
+        })
+    .catch(error=>res.status(500).json({error}));
+};
+/*
 exports.perso = (req,res,next)=>{
 
   const User = userModele(sequelize);
@@ -126,3 +247,4 @@ exports.delete=(req,res,next)=>{
         })
     .catch(error=>res.status(500).json({error}));
 };
+*/

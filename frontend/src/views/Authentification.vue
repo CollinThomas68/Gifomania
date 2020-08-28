@@ -66,7 +66,6 @@ export default {
             //localStorage.setItem("jwtToken",JSON.stringify(response.data.token));
             //localStorage.setItem("isAdmin",JSON.stringify(response.data.isAdmin));
             var jwtToken=JSON.stringify(response.data.token);
-            VueCookies.set("userId", response.data.userId , "24H");
             VueCookies.set("jwtToken", jwtToken , "24H");
             VueCookies.set("isAdmin",response.data.isAdmin,"24H")
             document.location.href="/perso";

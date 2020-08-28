@@ -53,7 +53,7 @@ export default {
           
             
           }) // Sinon, on affiche une erreur de requête
-          .catch(() => {this.msgError = "problème de requète !"});
+          .catch(() => {this.msgError = "Vous n'êtes pas autorisé à faire ceci !"});
       
     },
     setHighlight(){
@@ -90,7 +90,7 @@ export default {
                 console.log(response);
               this.msg="Ce gif a bien été supprimé des HighLights!";
                setTimeout(function () {
-            document.location.href = "/listing";
+            document.location.href = "/choixModeration";
           }, 5000); 
                     }) // Sinon, on affiche une erreur de requête
           .catch(() => {this.msgError = "problème de requète !"});

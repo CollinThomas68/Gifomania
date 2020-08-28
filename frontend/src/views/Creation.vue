@@ -84,7 +84,6 @@ export default {
       const fd = new FormData();
       const image =this.form.file;
       const message = {
-          userId: this.form.userId,
           title: this.form.title,
           text: this.form.text
       };
