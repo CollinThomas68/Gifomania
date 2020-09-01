@@ -1,14 +1,19 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-module.exports = (sequelize ) => {
+module.exports = (sequelize) => {
     class Message extends Model {
   
       static associate(models) {
         models.Message.belongsTo(models.User,{
-          foreignKey: 'userId' 
+          allowNull:false
         })
+
+     //   models.Message.hasMany(models.Commentaire,{
+       //   foreignKey: 'messageId' 
+       // })
       }
     };
+
 
     Message.init({
         title: DataTypes.STRING,

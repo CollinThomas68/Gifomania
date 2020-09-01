@@ -24,52 +24,7 @@
    <router-view/>
 </div>
 </template>
-<!--<template>
-  <div id="app">
-    <div class="container">
-    <div class="row">
-    <nav class="col navbar navbar-expand-lg justify-content align-items-center">
-      <router-link to="/">Groupomania | </router-link>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-      </button>
-      <div id="navbarContent" class="collapse navbar-collapse">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <router-link to="/">Home | </router-link>
-        </li>
-        <li v-if="!cookie" class="nav-item">  
-          <router-link to="/inscription"> Inscription | </router-link>
-        </li>
-        <li v-if="!cookie" class="nav-item">
-          <router-link to="/authentification"> Authentification | </router-link>
-        </li>
-        <li v-if="cookie" class="nav-item">
-          <router-link to="/choixModeration"> La sélection de la Modération | </router-link>
-        </li>
-        <li v-if="cookie" class="nav-item">
-          <router-link to="/listing"> Tous les Messages | </router-link>
-        </li>
-        <li v-if="cookie" class="nav-item">
-          <router-link to="/creation"> Créer un message | </router-link>
-        </li>
-        <li v-if="cookie" class="nav-item">
-          <router-link to="/perso" > Espace Perso | </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/about"> About | </router-link>
-        </li>
-        <li v-if="cookie" class="nav-item">
-          <button type="button" class="btn btn-danger" @click="disconnect" v-if="cookie"> Déconnexion </button>
-        </li>
-      </ul>
-      </div>
-    </nav>
-    </div></div>
-    <router-view/>
-  </div>
-</template>
--->
+
 <script>
 import VueCookies from 'vue-cookies'
 export default {
@@ -84,7 +39,7 @@ export default {
       // Pour se déconnecter, On vide le localStorage, on actualise la page et on redirige vers la page d'authentification
       //localStorage.clear();
       VueCookies.remove("jwtToken");
-
+      VueCookies.remove("userId");
       VueCookies.remove("isAdmin");
       document.location.href = "/";
 
@@ -107,10 +62,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  padding-bottom:125px;
 }
-
+h1{
+  font-size:2rem;
+}
 nav {
-  //padding: 30px;
+  margin-bottom:30px;
 
   a {
     font-weight: bold;
@@ -123,7 +81,92 @@ nav {
   li{
     padding-left : 5px;
   }
+
+}
+.validation{
+  background-color:green;
+  color:white;
+}
+.probleme{
+  background-color:red;
+  color:white;
 }
 
+.text-align{
+  text-align:center;
+}
+.form-control{
+  text-align:center;
+}
+.col-lg-6{
+  border :2px solid #f8f9fa;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+  
+}
+.col-md-6{
+    display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
 
+}
+.border{
+   border :2px solid #f8f9fa;
+}
+
+footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+    text-align:center;
+    background-color:#f8f9fa;
+    display:flex;
+    margin-top: 25px;
+    padding-top: 20px;
+      a{
+         color:#fd2d01;
+         font-style: bold;
+      }
+
+}
+header{
+  background-color:#f8f9fa;
+  height:100px;
+  text-align:center;
+}
+.col-lg-10{
+  border: solid 2px #f8f9fa;
+  padding:15px;
+  background-color:#f8f9fa;
+}
+
+.center{
+  display:flex;
+  justify-content:center;
+}
+.test{
+  background-color:#f8f9fa;
+}
+.card{
+    background-color : #f8f9fa !important;
+    padding:10px;
+}
+.cardlisting{
+      background-color : #f8f9fa !important;
+      padding:10px;
+      
+}
+ .marg20{
+   margin-bottom:20px;
+ }
+ .backcolor{
+         background-color : #f8f9fa !important;
+ }
+ .wrap{
+   word-wrap: break-word;
+ }
 </style>

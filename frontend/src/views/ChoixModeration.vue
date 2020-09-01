@@ -4,14 +4,30 @@
             <h3>La sélection de la modération !</h3>
         </div>
             
-        <div class="card-body">
-            <div v-for="message in pageOfItems" :key="message.id">
-                <a v-bind:href="'message/'+ message.id"><h4>{{message.title}}</h4>
-                <div><img :src="message.file" alt="message.title"/></div>
-                <div><p>Posté par : {{message.User.username}}</p></div>
-                </a>
+     
+        <div class="card-body container">
+          <div class="row">
+            <div v-for="message in pageOfItems" :key="message.id"  class="col-md-6">
+                <b-card
+                :title="message.title"
+                :img-src="message.file"
+                :img-alt="message.title"
+                img-top
+                tag="article"
+                style="max-width: 20rem;"
+                class="mb-2 cardlisting"
+              >
+                <b-card-text>
+                    {{message.text}}
+                </b-card-text>
+
+                <b-button v-bind:href="'message/'+ message.id" variant="primary">Accéder aux détails</b-button>
+              </b-card>
+
+                
             </div>
-          <div>{{msgError}}</div>
+          </div>
+          <div class="probleme marg20">{{msgError}}</div>
             
         </div>
         <div class="card-footer pb-0 pt-3">

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class=" row">
+    <form class=" row" @submit.prevent="EnvoiInscription">
       <div
         class="col-lg-6"
       >
@@ -15,20 +15,53 @@
       <div class="col-lg-6 text-align">
         <div class="form-group">
           <label for="inputEmail">Email Groupomania</label>
-          <input type="email" class="form-control" id="inputEmail" v-model="dataInscription.email" placeholder="Votre adresse mail" required/>
+          <input 
+          type="email"
+          class="form-control" 
+          id="inputEmail" 
+          required 
+          v-model="dataInscription.email" 
+          placeholder="Votre adresse mail"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          />
         </div>
         <div class="form-group">
           <label for="inputUsername">Username</label>
-          <input type="text" class="form-control" id="inputUsername" v-model="dataInscription.username" placeholder="Un surnom compris entre 5 et 20 caractères" required/>
+          <input
+          type="text" 
+          class="form-control" 
+          id="inputUsername" 
+          v-model="dataInscription.username" 
+          placeholder="Votre nom d'utilisateur" 
+          title="Un surnom compris entre 5 et 20 caractères"
+          required
+          pattern="^[a-z0-9A-Z]{5,20}$"
+          />
         </div>
         <div class="form-group">
           <label for="inputPassword">Password</label>
-          <input type="password" class="form-control" id="inputPassword" v-model="dataInscription.password" required placeholder="Entre 4 et 8 caractères 1minuscule, 1majuscule et 1 chiffre mini !" />
+          <input
+          type="password" 
+          class="form-control" 
+          id="inputPassword" 
+          v-model="dataInscription.password"
+          required 
+          title="Entre 4 et 8 caractères 1minuscule, 1majuscule et 1 chiffre mini !"
+          placeholder="Votre mot de passe"
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$" 
+          rows="4"
+          />
         </div>
-        <p class="form__message">{{msg}}</p>
-         <button @click.prevent="EnvoiInscription" type="submit" class="btn btn-danger mb-3 mt-3" >Créer mon compte</button>
+            <div v-if="msgError" class="probleme col-lg-6 center marg20">
+            {{msgError}}
+    </div>
+        <div class="form__message validation marg20" >{{msg}}</div>
+         <button  type="submit" class="btn btn-danger mb-3 mt-3" >Créer mon compte</button>
       </div>
+
     </form>
+
+
   </div>
 </template>
 
@@ -43,20 +76,14 @@ export default {
         email: null,
         password: null
       },
-      msg: ""
+      msg: "",
+      msgError:""
     };
   },
   methods: {
-    EnvoiInscription() {
-      const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
-      const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
-      const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{5,20}$/;
-      if (
-        (this.dataInscription.email !== null ||
-        this.dataInscription.username !== null ||
-        this.dataInscription.password !== null) &&
-        (regexPassword.test(this.dataInscription.password) && regexEmail.test(this.dataInscription.email) && usernameRegex.test(this.dataInscription.username))
-      ) {
+    EnvoiInscription(evt) {
+      evt.preventDefault();
+      
         axios
           .post("http://localhost:3000/api/auth/inscription", this.dataInscription)
           .then(response => {
@@ -65,29 +92,17 @@ export default {
           this.msg ="Votre compte a été correctement crée. Vous allez être redirigé vers la page de connexion!";
           setTimeout(function () {
             document.location.href = "/authentification";
-          }, 5000); 
+          }, 3000); 
           })
-          .catch(error => console.log(error));
-      } else {
-        alert("Vos saisies ne sont pas conformes!");
-      }
+          .catch(error =>{ console.log(error.response.data.error)
+          this.msgError=error.response.data.error});
+         
     }
+
   }
 };
 </script>
 
 <style lang="scss">
-.text-align{
-  text-align:center;
-}
-.form-control{
-  text-align:center;
-}
-.col-lg-6{
-  border :2px solid black;
-  display:flex;
-  flex-direction:column;
-  justify-content: center;
-  align-items:center;
-}
+
 </style>

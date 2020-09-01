@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class=" row">
+    <form class=" row" @submit.prevent="Authentification"> 
       <div
         class="col-lg-6"
       >
@@ -15,20 +15,35 @@
       <div class="col-lg-6 text-align">
         <div class="form-group">
           <label for="inputEmail">Email</label>
-          <input type="text" class="form-control" id="inputEmail" v-model="dataAuthentification.email" placeholder="Votre mail!"/>
+          <input 
+          type="text" 
+          class="form-control" 
+          id="inputEmail" 
+          v-model="dataAuthentification.email" 
+          placeholder="Votre mail!"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          />
         </div>
         <div class="form-group">
           <label for="inputPassword">Password</label>
           <input
             type="password"
+            title="Entre 4 et 8 caractères 1minuscule, 1majuscule et 1 chiffre mini !"
             class="form-control"
             id="inputPassword"
             v-model="dataAuthentification.password"
             placeholder="Votre mot de passe!"
-          />
+            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$" 
+            />
         </div>
-        <button @click.prevent="Authentification" type="submit" class="btn btn-danger mb-3 mt-3">Me connecter</button>
+        <div v-if="msgError" class="probleme col-lg-6 center marg20">
+         {{msgError}}
+        </div>
+                <button type="submit" class="btn btn-danger mb-3 mt-3">Me connecter</button>
       </div>
+
+
+
     </form>
   </div>
 </template>
@@ -45,35 +60,26 @@ export default {
         email: null,
         password: null
       },
-      msg: ""
+      msgError:""
 
     };
   },
   methods: {
     Authentification() {
-      const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
-      const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
-      if (
-        (this.dataAuthentification.email !== null ||
-        this.dataAuthentification.password !== null)  &&
-                (regexPassword.test(this.dataAuthentification.password) && regexEmail.test(this.dataAuthentification.email))
-      ) {
+
         axios
           .post("http://localhost:3000/api/auth/authentification", this.dataAuthentification)
           .then(response => {
             console.log(response.data)
-            //localStorage.setItem("userId",JSON.stringify(response.data.userId));
-            //localStorage.setItem("jwtToken",JSON.stringify(response.data.token));
-            //localStorage.setItem("isAdmin",JSON.stringify(response.data.isAdmin));
+
             var jwtToken=JSON.stringify(response.data.token);
             VueCookies.set("jwtToken", jwtToken , "24H");
             VueCookies.set("isAdmin",response.data.isAdmin,"24H")
+            VueCookies.set("userId",response.data.userId,"24H")
             document.location.href="/perso";
           })
-          .catch(error => console.log(error));
-      } else {
-        console.log("Un problème est survenu !");
-      }
+          .catch(error =>{ console.log(error.response.data.error)
+          this.msgError=error.response.data.error});
     }
   }
 };

@@ -6,6 +6,7 @@ const cors = require("cors");
 const path = require('path');
 const userRoutes = require('./routes/user');
 const messageRoutes = require('./routes/message');
+const commentaireRoutes = require('./routes/commentaire');
 
 var corsOptions = {
   origin: "http://localhost:8080"
@@ -35,4 +36,5 @@ app.use('/images',express.static(path.join(__dirname,'images')));
 //Lien vers les routes
 app.use('/api/message', messageRoutes);
 app.use('/api/auth', userRoutes);
+app.use('/api/commentaire', commentaireRoutes);
 module.exports = app;
