@@ -141,7 +141,8 @@ export default {
             document.location.href = "/listing";
           }, 5000); 
                     }) // Sinon, on affiche une erreur de requête
-          .catch(() => {this.msgError = "Vous n'êtes pas sensé avoir le droit de faire ça !"});
+          .catch(error =>{ console.log(error.response.data.error)
+          this.msgError=error.response.data.error});
     },
     disableHighlight(){
       console.log('Coucou')
@@ -207,10 +208,12 @@ export default {
           console.log(id);
           console.log('Test admin :');
           console.log(this.isAdmin);
+
+
+    //Requète pour obtenir les infos détaillées du message      
     axios
     .get(`http://localhost:3000/api/message/messageDetail/${id}`,{
       headers:{
-        //Authorization: "Bearer " + JSON.parse(localStorage.getItem("jwtToken"))
         Authorization: "Bearer " + JSON.parse(VueCookies.get("jwtToken"))
       },
 
@@ -225,6 +228,8 @@ export default {
     })
      .catch(error =>{ console.log(error.response.data.error)
           this.msgError=error.response.data.error});
+
+    //Requète pour obtenir le listing des commentaires liés à ce message           
     axios
     .get(`http://localhost:3000/api/commentaire/listing/${id}`,{
       headers:{

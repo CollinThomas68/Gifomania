@@ -22,6 +22,17 @@
     </b-collapse>
   </b-navbar>
    <router-view/>
+       <footer>
+      <ul class="list-inline">
+        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="#">FB</a></li>
+        <li class="list-inline-item">&middot;</li>
+        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="#">G+</a></li>
+        <li class="list-inline-item">&middot;</li>
+        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="#">T</a></li>
+        <li class="list-inline-item">&middot;</li>
+        <li class="list-inline-item"><a href="mailto:moderation@groupomania.fr" title="Nous contacter">Contactez-nous</a></li>
+     </ul>
+    </footer>
 </div>
 </template>
 

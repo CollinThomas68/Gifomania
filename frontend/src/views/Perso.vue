@@ -139,6 +139,7 @@
 import VueCookies from 'vue-cookies'
 import axios from "axios";
 export default {
+  
     data() {
         return {
           formControl: {

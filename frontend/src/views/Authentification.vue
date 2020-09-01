@@ -60,7 +60,8 @@ export default {
         email: null,
         password: null
       },
-      msgError:""
+      msgError:"",
+      msgError2:""
 
     };
   },
@@ -78,8 +79,17 @@ export default {
             VueCookies.set("userId",response.data.userId,"24H")
             document.location.href="/perso";
           })
-          .catch(error =>{ console.log(error.response.data.error)
-          this.msgError=error.response.data.error});
+          .catch(error =>{
+          if(error.response.status == 429){
+           console.log('test erreur',error.response.status)
+           this.msgError=error.response.data
+          }else{
+            console.log( "test status :", error.response.status)
+            this.msgError=error.response.data.error
+          }
+          
+      
+          });
     }
   }
 };

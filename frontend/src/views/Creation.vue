@@ -110,7 +110,7 @@ export default {
       console.log(this.jwtToken);
       
       if(this.jwtToken){
-        if(extension === 'jpg' || extension === 'png' || extension === 'gif'){
+        if(extension === 'jpg' || extension ==='jpeg' || extension === 'png' || extension === 'gif'){
         axios // On effectue la requête grâce à axios et grâce au Token d'identification de l'User
           .post("http://localhost:3000/api/message/creation", fd, {
             headers: {
@@ -120,9 +120,9 @@ export default {
           .then(response => {
                 console.log(response);
               this.msg="Votre gif a bien été enregistré, vous allez être redirigé vers la section des gifs !";
-              // setTimeout(function () {
-           // document.location.href = "/listing";
-         // }, 5000); 
+               setTimeout(function () {
+            document.location.href = "/listing";
+          }, 5000); 
           
 
           

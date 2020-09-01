@@ -41,7 +41,10 @@ exports.inscription = (req,res,next)=>{
  
 };
 
-//Code pour la connexion d'un utilisateur existant
+//*************************************************
+//Code pour la connexion d'un utilisateur existant*
+//*************************************************
+
 exports.authentification = (req,res,next)=>{
     const User=userModele(sequelize);
     User.findOne({where: {email:req.body.email} })
@@ -69,6 +72,9 @@ exports.authentification = (req,res,next)=>{
     .catch(error=> res.status(500).json({ error}));
 };
 
+//***************************************************
+//Code pour l'accès à la page perso de l'utilisateur*
+//***************************************************
 exports.perso = (req,res,next)=>{
   const User = userModele(sequelize);
   var headerAuth  = req.headers['authorization'];
@@ -85,6 +91,10 @@ exports.perso = (req,res,next)=>{
       .catch(error=> res.status(400).json({message:'Utilisateur non trouvé'}))
 }; 
 
+
+//****************************************************************************
+//Code pour la vérification des infos utilisateur avant suppression du compte*
+//****************************************************************************
 exports.verif = (req,res,next)=>{
   const User = userModele(sequelize);
   var headerAuth  = req.headers['authorization'];
@@ -120,6 +130,10 @@ exports.verif = (req,res,next)=>{
     .catch(error=>res.status(500).json({error}));
 };
 
+
+//***********************************
+//Code pour la suppression du compte*
+//***********************************
 exports.suppression=(req,res,next)=>{
   const User = userModele(sequelize);
   const Message = messageModele(sequelize);
@@ -171,6 +185,10 @@ exports.suppression=(req,res,next)=>{
     .catch(error=>res.status(500).json({error}));
 };
 
+
+//******************************************************
+//Code pour la modification de l'email de l'utilisateur*
+//******************************************************
 exports.modifmail = (req,res,next)=>{
   const User = userModele(sequelize);
   var headerAuth  = req.headers['authorization'];
@@ -209,6 +227,10 @@ exports.modifmail = (req,res,next)=>{
     .catch(error=>res.status(500).json({error}));
 };
 
+
+//*******************************************************
+//Code pour la modification du password de l'utilisateur*
+//*******************************************************
 exports.modifpassword = (req,res,next)=>{
   const User = userModele(sequelize);
   var headerAuth  = req.headers['authorization'];
@@ -235,7 +257,7 @@ exports.modifpassword = (req,res,next)=>{
                 const newPassword=hash;
              
                 console.log('Test hash',newPassword);
-                User.update({password : newPassword },{where:{id:Id}})//On sauvegarde l'utilisateur dans la base de données
+                User.update({password : newPassword },{where:{id:Id}})//On met à jour le mot de passe dans la base de données
                   .then(() => res.status(201).json({message : 'Mot de passe actualisé !'}))
                   .catch(error=> res.status(400).json({ error }));
                 })

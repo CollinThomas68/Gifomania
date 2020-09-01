@@ -6,7 +6,9 @@ const sequelize = require('../db.js');
 const jwtUtils = require('../utils/jwtUtils');
 
 
-
+//***************************************
+//Code pour la création d'un commentaire*
+//***************************************
 exports.creation = (req, res, next) => {
 
     const User = UserModele(sequelize);
@@ -46,6 +48,10 @@ exports.creation = (req, res, next) => {
 
   };
 
+
+//*****************************************************************************
+//Code pour l'affichage de tous les commentaires liés à un message particulier*
+//*****************************************************************************
  exports.getAllCommentaires = (req, res, next) => {
     const Commentaire = CommentaireModele(sequelize);
 

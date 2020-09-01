@@ -7,7 +7,9 @@ const fs = require('fs');
 const jwtUtils = require('../utils/jwtUtils');
 const { Op } = require('sequelize');
 
-
+//***********************************
+//Code pour la création d'un message*
+//***********************************
 exports.creation = (req, res, next) => {
     const Message = messageModele(sequelize);
     const User = UserModele(sequelize);
@@ -19,7 +21,7 @@ exports.creation = (req, res, next) => {
     }else{
       User.findOne({where:{id:Id}})
       .then(userfound=>{
-        if(userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
+        if(userfound){
           
           const messageObject = JSON.parse(req.body.message); // on extrait l'objet JSON de notre req.body.message
           const message = new Message({ // on crée une instance de notre classe Message
@@ -32,7 +34,7 @@ exports.creation = (req, res, next) => {
           message.save()
             .then(() => res.status(201).json({ message: 'Message enregistré' }))
             .catch(error => res.status(400).json({ error : "Erreur lors de la création de votre message" }));
-        }else{
+        }else{//Si on ne trouve pas d'utilisateur correspondant dans la base !
           res.status(400).json({error : 'Cet utilisateur n\'existe pas !'});
         }
       })
@@ -43,6 +45,9 @@ exports.creation = (req, res, next) => {
 
   };
 
+//************************************************
+//Code pour afficher tous les messages de la base*
+//************************************************
   exports.getAllMessage = (req, res, next) => {
     const Message = messageModele(sequelize);
     const User = UserModele(sequelize); // JOIN
@@ -68,6 +73,9 @@ exports.creation = (req, res, next) => {
 
   };
 
+//****************************************************************************
+//Code pour afficher les messages appartenant à la sélection de la modération*
+//****************************************************************************
   exports.choixModeration = (req, res, next) => {
     const Message = messageModele(sequelize);
     const User = UserModele(sequelize); // JOIN
@@ -97,6 +105,9 @@ exports.creation = (req, res, next) => {
 
   };     
 
+//******************************************************
+//Code pour afficher le détail d'un message particulier*
+//******************************************************
   exports.messageDetail = (req, res, next) => {
     const Message = messageModele(sequelize);
     const User = UserModele(sequelize); // JOIN
@@ -125,7 +136,9 @@ exports.creation = (req, res, next) => {
 
   };    
   
-//Code pour supprimer un message
+//**********************************************
+//Code pour supprimer un message en particulier*
+//**********************************************
 exports.suppressionMessage = (req,res,next)=>{
   const Commentaire = commentaireModele(sequelize);
   const Message = messageModele(sequelize);
@@ -154,7 +167,7 @@ exports.suppressionMessage = (req,res,next)=>{
             const filename=messagetrouve.file.split('/images/')[1];
             const mesId=messagetrouve.id;
             console.log('Test messageId :',mesId);
-            //Commentaire.destroy({where:{messageId:mesId}})
+            //Ici on va effacer les commentaires ayant pour messageId l'id du message que l'on veut supprimer!
             Commentaire.destroy({where: {messageId:mesId}})
                   .then( console.log('Commentaire supprimé'))
                   .catch(error => res.status(400).json({ error }));
@@ -180,7 +193,9 @@ exports.suppressionMessage = (req,res,next)=>{
 
 };    
 
-
+//******************************************************************
+//Code pour effectuer le placement ou la suppression des highlights*
+//******************************************************************
 exports.Highlight = (req,res,next) =>{
   const Message = messageModele(sequelize);
   const User = UserModele(sequelize); 
@@ -193,7 +208,7 @@ exports.Highlight = (req,res,next) =>{
   console.log('test valeur highlights :')
   console.log(highlights);
   if(Id<=0){
-    res.status(400).json(({'error':'Mauvais token'}))
+    res.status(400).json(({error:'Mauvais token'}))
   }else{
     User.findOne({where:{id:Id}})
     .then(userfound=>{
@@ -223,64 +238,3 @@ exports.Highlight = (req,res,next) =>{
 };
 
 
-/*
-exports.getAllMessage = (req, res, next) => {
-  const Message = messageModele(sequelize);
-  const User = UserModele(sequelize); // JOIN
-  const models = {Message, User}; // JOIN
-  User.associate(models); // JOIN
-  Message.associate(models); // JOIN
-  Message.findAll({order: sequelize.literal('(createdAt) DESC'), include: {model : models.User, attributes: ['username']} }) 
-    .then(messages => res.status(200).json(messages))
-    .catch(error => res.status(400).json({ error : "getallMessage" }));
-
-};
-
-//Code pour supprimer un message
-exports.suppressionMessage = (req,res,next)=>{
-  const Message = messageModele(sequelize);
-  console.log(req.params.id);
-
-  Message.findOne({where:{ id: req.params.id && userId : Id}})
-    .then(messagetrouve=>{
-      console.log(messagetrouve);
-      const filename=messagetrouve.file.split('/images/')[1];
-      console.log('Test');
-      console.log(filename);
-      fs.unlink(`images/${filename}`,()=>{//Code identique que pour l'actualisation avec nouvelle image :  ne pas laisser trainer de vieilles photos sur le serveur
-          Message.destroy({where:{ id: req.params.id }})
-            //On supprime le message
-            .then( res.status(200).json({message:'Message supprimé!'}))
-            .catch(error => res.status(400).json({ error }));
-      });
-    })
-
-      .catch(error => res.status(500).json({ error }));
-  
-};
-
-exports.Highlight = (req,res,next) =>{
-  const Message = messageModele(sequelize);
-  
-  const highlights = req.body.highlights;
-
-
-  console.log('Test id message :');
-  console.log(req.params.id);
-  console.log('test valeur highlights :')
-  console.log(highlights);
-
-  Message.findOne({where:{ id: req.params.id}})
-  .then(messagetrouve => {
-      console.log('Test message trouvé :');
-      console.log(messagetrouve)
-      console.log('Test highlights trouvé :');
-      console.log(messagetrouve.highlights);
-      Message.update({ highlights: req.body.highlights},{where:{ id: req.params.id}})//On actualise uniquement le champ Highlights de la table message !
-      .then(() => res.status(200).json({message: 'Statut modifié !'}))
-      .catch(error => res.status(404).json({ error }));
-  }).catch(error => res.status(400).json( { error } ))
-};
-
-
-*/
