@@ -88,8 +88,6 @@ export default {
             msgError:"",
             msg:"",
             jwtToken:VueCookies.get("jwtToken"),
-            //userId:"VueCookies.get("userId")",
-            //isAdmin:VueCookies.get("isAdmin")
             userId:"",
             isAdmin:""
 
@@ -197,7 +195,7 @@ export default {
     }
 
   },
-      mounted(){
+    mounted(){
             //Test si le cookie d'authentification existe toujours
               if(VueCookies.isKey("jwtToken")){
                console.log('Utilisateur authentifié')
