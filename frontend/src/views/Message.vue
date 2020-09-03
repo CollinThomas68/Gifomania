@@ -101,7 +101,7 @@ export default {
   // update page of items
                 this.pageOfItems = pageOfItems;
         },
-    suppressionMessage() {
+    suppressionMessage() {//sert à supprimer le message
       //evt.preventDefault();
       
  
@@ -127,8 +127,8 @@ export default {
           .catch(() => {this.msgError = "Vous n'êtes pas autorisé à faire ceci !"});
       
     },
-    setHighlight(){
-      console.log('Coucou')
+    setHighlight(){//Permet de mettre en avant dans la sélection
+    
 
       const id = window.location.pathname.split("message/")[1];
         axios // On effectue la requête grâce à axios et grâce au Token d'identification de l'User
@@ -149,8 +149,8 @@ export default {
           .catch(error =>{ console.log(error.response.data.error)
           this.msgError=error.response.data.error});
     },
-    disableHighlight(){
-      console.log('Coucou')
+    disableHighlight(){//Permet de retirer un message de la sélection
+  
       const id = window.location.pathname.split("message/")[1];
         axios // On effectue la requête grâce à axios et grâce au Token d'identification de l'User
           .put(`http://localhost:3000/api/message/highlight/${id}`,{highlights:0}, {
@@ -168,7 +168,7 @@ export default {
           .catch(error =>{ console.log(error.response.data.error)
           this.msgError=error.response.data.error});
        
-    },creationCommentaire(evt) {
+    },creationCommentaire(evt) {//Permet de créer un commentaire pour le message
       evt.preventDefault();
       const id = window.location.pathname.split("message/")[1];
       if(this.jwtToken){
@@ -214,59 +214,52 @@ export default {
           console.log('Test admin :');
           console.log(this.isAdmin);
 
-    //Requète pour obtenir les infos détaillées du message   
-            axios
+    //Requète pour obtenir les infos liées au visiteur   
+    axios
       .get("http://localhost:3000/api/auth/perso",{
-
-      headers:{
+        headers:{
         Authorization: "Bearer " + JSON.parse(this.jwtToken)
-      },
-
-      
-    })
-    .then (response=>{
-        
-
-      this.userId=response.data.id;
-      this.isAdmin=response.data.isAdmin;
-    })
-          .catch(error => {
-              console.log('erreur')
+        }
+  
+      })
+      .then (response=>{
+        this.userId=response.data.id;
+        this.isAdmin=response.data.isAdmin;
+      })
+      .catch(error => {
+        console.log('erreur')
         console.log(error); 
       })
     //Requète pour obtenir les infos détaillées du message      
     axios
-    .get(`http://localhost:3000/api/message/messageDetail/${id}`,{
-      headers:{
+      .get(`http://localhost:3000/api/message/messageDetail/${id}`,{
+        headers:{
         Authorization: "Bearer " + JSON.parse(VueCookies.get("jwtToken"))
-      },
-
-      
-    })
-    .then (response=>{
-      
-     
-      this.messageDetail=response.data;
-      this.messageUser=this.messageDetail.User.username;
-      console.log('Reponse serveur',this.messageDetail);
-    })
-     .catch(error =>{ console.log(error.response.data.error)
-          this.msgError=error.response.data.error});
+        }
+ 
+      })
+      .then (response=>{
+        this.messageDetail=response.data;
+        this.messageUser=this.messageDetail.User.username;
+        console.log('Reponse serveur',this.messageDetail);
+      })
+      .catch(error =>{ console.log(error.response.data.error)
+        this.msgError=error.response.data.error});
 
     //Requète pour obtenir le listing des commentaires liés à ce message           
     axios
-    .get(`http://localhost:3000/api/commentaire/listing/${id}`,{
-      headers:{
+      .get(`http://localhost:3000/api/commentaire/listing/${id}`,{
+        headers:{
         Authorization: "Bearer " + JSON.parse(this.jwtToken)
-      }
-      
-    })
-    .then (response=>{
-      this.commentaireItems=response.data;
-      console.log(this.commentaireItems);
-    })
-    .catch(error =>{ console.log(error.response.data.error)
-          this.msgError=error.response.data.error});
+        }
+
+      })
+      .then (response=>{
+        this.commentaireItems=response.data;
+        console.log(this.commentaireItems);
+      })
+      .catch(error =>{ console.log(error.response.data.error)
+        this.msgError=error.response.data.error});
   }
 };
 
