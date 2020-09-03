@@ -57,7 +57,7 @@
             <div v-for="commentaire in pageOfItems" :key="commentaire.id">
               <div class="row marg20">
                 <div class="col-md-3"><p><b><u>Posté par : {{commentaire.username}}</u></b><br>
-                Le {{commentaire.createdAt | moment( "Do dddd MMMM YYYY, HH:mm:ss ")}}</p></div>
+                Le {{commentaire.createdAt | moment( " dddd Do MMMM YYYY, HH:mm:ss ")}}</p></div>
                 <div class="col-md-9 border backcolor wrap">{{commentaire.text}}</div>
               </div>  
             </div>

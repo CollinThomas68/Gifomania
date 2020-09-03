@@ -5,7 +5,8 @@ module.exports = (sequelize) => {
   
       static associate(models) {
         models.Message.belongsTo(models.User,{
-          allowNull:false
+          allowNull:false,
+          onDelete: 'CASCADE'
         })
 
   
