@@ -8,9 +8,7 @@ module.exports = (sequelize) => {
           allowNull:false
         })
 
-     //   models.Message.hasMany(models.Commentaire,{
-       //   foreignKey: 'messageId' 
-       // })
+  
       }
     };
 

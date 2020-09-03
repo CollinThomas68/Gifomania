@@ -36,7 +36,7 @@
             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$" 
             />
         </div>
-        <div v-if="msgError" class="probleme col-lg-6 center marg20">
+        <div v-if="msgError" class="probleme center marg20">
          {{msgError}}
         </div>
                 <button type="submit" class="btn btn-danger mb-3 mt-3">Me connecter</button>
@@ -75,9 +75,7 @@ export default {
 
             var jwtToken=JSON.stringify(response.data.token);
             VueCookies.set("jwtToken", jwtToken , "24H");
-            VueCookies.set("isAdmin",response.data.isAdmin,"24H")
-            VueCookies.set("userId",response.data.userId,"24H")
-            document.location.href="/perso";
+            document.location.href="/listing";
           })
           .catch(error =>{
           if(error.response.status == 429){

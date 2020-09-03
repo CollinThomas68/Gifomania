@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../views/Home.vue'
+//import Home from '../views/Home.vue'
 import Creation from '../views/Creation.vue'
 import Message from '../views/Message.vue'
 import ChoixModeration from'../views/ChoixModeration.vue'
@@ -10,18 +10,14 @@ Vue.use(VueRouter)
 
 
   const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
+
   {
     path: '/inscription',
     name: 'Inscription',
     component: () => import('../views/Inscription.vue')
   },
   {
-    path: '/authentification',
+    path: '/',
     name: 'Authentification',
     component: () => import('../views/Authentification.vue')
   },

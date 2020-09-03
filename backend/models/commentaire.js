@@ -1,14 +1,7 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Commentaire extends Model {
-  /*
-  //    static associate(models) {
-    //    models.Commentaire.belongsTo(models.Message,{
-          foreignKey: 'messageId'
-        })
-      
-    }*/
+ class Commentaire extends Model {
   };
 
     Commentaire.init({

@@ -46,8 +46,8 @@
       ></b-form-file>
       <div v-if="form.file" class="mt-2">Fichier sélectionné : {{ form.file ? form.file.name : ''}}</div>
     </b-form-group>
-    <div class="probleme marg20">{{msgError}}</div>
-    <div class="validation marg20">{{msg}}</div>
+    <div v-if="msgError" class="probleme marg20">{{msgError}}</div>
+    <div v-if="msg" class="validation marg20">{{msg}}</div>
     <b-button class="button" type="submit" variant="dark">Envoyer</b-button>
     <b-button class="button-reset" size="sm" type="reset" variant="danger">Effacer</b-button>
   </b-form>
@@ -82,7 +82,7 @@ export default {
               }else{
                 this.msgError="Vous n'êtes plus authentifié, vous allez être redirigé vers l'accueil du site !";
                 setTimeout(function () {
-                document.location.href = "/authentification";
+                document.location.href = "/";
                 }, 5000); 
               }
   },

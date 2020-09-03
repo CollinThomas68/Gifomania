@@ -4,20 +4,23 @@
     "password": "Shingala3606!",
     "database": "groupomaniacommu",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "SYSTEM"
   },
   "test": {
     "username": "root",
     "password": "Shingala3606!",
     "database": "groupomaniacommu",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "SYSTEM"
   },
   "production": {
     "username": "root",
     "password": "Shingala3606!",
     "database": "groupomaniacommu",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "SYSTEM"
   }
 }

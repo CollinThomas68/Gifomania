@@ -5,7 +5,7 @@
         <div class="affichageMess">
           <h4>Titre : {{messageDetail.title}}</h4>
 
-          <div class="center">
+          <div class="center marg20">
 
 
               <b-card
@@ -24,11 +24,11 @@
               </b-card>
 
           </div>
-          <div class="validation marg20">{{msg}}</div>
-          <div class="probleme marg20">{{msgError}}</div>
-          <div><button type="button" class="btn btn-danger marg20" @click="suppressionMessage" v-if="isAdmin=='true' || userId==messageDetail.userId">Suppression</button></div>
-          <div><button type="button" class="btn btn-danger marg20" @click="setHighlight" v-if="isAdmin==='true' && !messageDetail.highlights">Mettre en avant</button></div>
-          <div><button type="button" class="btn btn-danger marg20" @click="disableHighlight" v-if="isAdmin==='true' && messageDetail.highlights">Ne plus mettre en avant</button></div>
+          <div v-if="msg" class="validation marg20">{{msg}}</div>
+          <div v-if="msgError" class="probleme marg20">{{msgError}}</div>
+          <div><button type="button" class="btn btn-danger marg20" @click="suppressionMessage" v-if="isAdmin || userId==messageDetail.userId">Suppression</button></div>
+          <div><button type="button" class="btn btn-danger marg20" @click="setHighlight" v-if="isAdmin && !messageDetail.highlights">Mettre en avant</button></div>
+          <div><button type="button" class="btn btn-danger marg20" @click="disableHighlight" v-if="isAdmin && messageDetail.highlights">Ne plus mettre en avant</button></div>
         </div>
       </div>
       <div  class="center">  
@@ -57,7 +57,7 @@
             <div v-for="commentaire in pageOfItems" :key="commentaire.id">
               <div class="row marg20">
                 <div class="col-md-3"><p><b><u>Posté par : {{commentaire.username}}</u></b><br>
-                {{commentaire.createdAt}}</p></div>
+                Le {{commentaire.createdAt | moment( "Do dddd MMMM YYYY, HH:mm:ss ")}}</p></div>
                 <div class="col-md-9 border backcolor wrap">{{commentaire.text}}</div>
               </div>  
             </div>
@@ -73,6 +73,8 @@
 <script>
 import VueCookies from 'vue-cookies'
 import axios from "axios";
+
+
 export default {
     data() {
         return {
@@ -86,11 +88,14 @@ export default {
             msgError:"",
             msg:"",
             jwtToken:VueCookies.get("jwtToken"),
-            userId:VueCookies.get("userId"),
-            isAdmin:VueCookies.get("isAdmin")
+            //userId:"VueCookies.get("userId")",
+            //isAdmin:VueCookies.get("isAdmin")
+            userId:"",
+            isAdmin:""
 
         };
     },
+
     methods: {
     onChangePage(pageOfItems) {
   // update page of items
@@ -199,7 +204,7 @@ export default {
               }else{
                 this.msgError="Vous n'êtes plus authnetifié, vous allez être redirigé vers l'accueil du site !";
                 setTimeout(function () {
-                document.location.href = "/authentification";
+                document.location.href = "/";
                 }, 5000); 
               }
 
@@ -209,7 +214,26 @@ export default {
           console.log('Test admin :');
           console.log(this.isAdmin);
 
+    //Requète pour obtenir les infos détaillées du message   
+            axios
+      .get("http://localhost:3000/api/auth/perso",{
 
+      headers:{
+        Authorization: "Bearer " + JSON.parse(this.jwtToken)
+      },
+
+      
+    })
+    .then (response=>{
+        
+
+      this.userId=response.data.id;
+      this.isAdmin=response.data.isAdmin;
+    })
+          .catch(error => {
+              console.log('erreur')
+        console.log(error); 
+      })
     //Requète pour obtenir les infos détaillées du message      
     axios
     .get(`http://localhost:3000/api/message/messageDetail/${id}`,{

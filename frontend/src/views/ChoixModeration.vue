@@ -18,7 +18,7 @@
                 class="mb-2 cardlisting"
               >
                 <b-card-text>
-                    {{message.text}}
+                    <b><u>Auteur :</u></b> {{message.User.username}}
                 </b-card-text>
 
                 <b-button v-bind:href="'message/'+ message.id" variant="primary">Accéder aux détails</b-button>
@@ -27,7 +27,7 @@
                 
             </div>
           </div>
-          <div class="probleme marg20">{{msgError}}</div>
+          <div v-if="msgError" class="probleme marg20">{{msgError}}</div>
             
         </div>
         <div class="card-footer pb-0 pt-3">
@@ -62,7 +62,7 @@ export default {
               }else{
                 this.msgError="Vous n'êtes plus authnetifié, vous allez être redirigé vers l'accueil du site !";
                 setTimeout(function () {
-                document.location.href = "/authentification";
+                document.location.href = "/";
                 }, 5000); 
               }
         axios

@@ -7,7 +7,7 @@ const sequelize = require('../db.js');
 const fs = require('fs');
 const jwtUtils = require('../utils/jwtUtils');
 const { Op } = require('sequelize');
-const Commentaire = require('../models/Commentaire');
+
 
 //************************************************
 //Code pour l'inscription d'un nouvel utilisateur*
@@ -81,7 +81,7 @@ exports.perso = (req,res,next)=>{
   var Id      = jwtUtils.getUserId(headerAuth);
   console.log('Test userId');
   console.log(Id);
-      if(Id<0){
+      if(Id<=0){
         res.status(400).json(({error:'wrong token'}))
       }
       User.findOne({
@@ -203,21 +203,21 @@ exports.modifmail = (req,res,next)=>{
     }
     User.findOne({where:{id:Id,email:req.body.emailActuel}})
     .then(userfound=>{
-      if(userfound){//Si on ne trouve pas d'utilisateur correspondant dans la base !
-      User.findOne({where:{email:req.body.emailNouveau}})
+      if(userfound){//l'email saisi correspond à celui stocké dans la base de données
+      User.findOne({where:{email:req.body.emailNouveau}})//On regarde si on trouve un utilisateur avec l'email désiré
       .then(userverif=>{
-        if(!userverif){
+        if(!userverif){// l'email désiré n'existe pas dans la base de données
           User.update ({email : req.body.emailNouveau},{where:{id:Id}})
           .then(() => res.status(200).json({message: 'Votre demande a bien été prise en compte!'}))
           .catch(error => res.status(404).json({ error }));
-        }else{
+        }else{//l'email désiré est déjà utilisé dans la base de données 
           res.status(404).json({ error : 'L\'email désiré n\'est pas disponnible'});
         }
         
       })
       .catch(error=>res.status(500).json({error}));
 
-      }else{
+      }else{//Si on l'email ne correspond pas à celui de la base de données !
         res.status(400).json({error : 'Votre email n\'est pas le bon !'});
         console.log('cas ou email actu ne correspond pas à la saisie utilisateur');
       }

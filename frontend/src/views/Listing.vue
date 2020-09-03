@@ -16,8 +16,8 @@
                 style="max-width: 20rem;"
                 class="mb-2 cardlisting"
               >
-                <b-card-text class="wrap">
-                    {{message.text}}
+                <b-card-text >
+                    <b><u>Auteur :</u></b> {{message.User.username}}
                 </b-card-text>
 
                 <b-button v-bind:href="'message/'+ message.id" variant="primary">Accéder aux détails</b-button>
@@ -26,10 +26,12 @@
                 
             </div>
           </div>
-          <div class="probleme marg20">{{msgError}}</div>
+           <div v-if="msgError" class="probleme center marg20">
+         {{msgError}}
+          </div>
             
         </div>
-        <div class="card-footer pb-0 pt-3">
+        <div class="card-footer">
             <jw-pagination :items="messageItems" @changePage="onChangePage" :pageSize="10"></jw-pagination>
         </div>
     </div>
@@ -45,7 +47,7 @@ export default {
             messageItems:[],
             pageOfItems: [],
             jwtToken:VueCookies.get("jwtToken"),
-            msgError:""
+            msgError:"",
         };
     },
     methods: {
@@ -62,7 +64,7 @@ export default {
               }else{
                 this.msgError="Vous n'êtes plus authnetifié, vous allez être redirigé vers l'accueil du site !";
                 setTimeout(function () {
-                document.location.href = "/authentification";
+                document.location.href = "/";
                 }, 5000); 
               }
         axios
@@ -74,6 +76,7 @@ export default {
     })
     .then (response=>{
       this.messageItems=response.data;
+      console.log(this.messageItems);
     })
     .catch(error =>{ console.log(error.response.data.error)
           this.msgError=error.response.data.error});

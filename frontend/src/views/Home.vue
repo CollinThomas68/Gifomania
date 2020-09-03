@@ -18,9 +18,5 @@ export default {
 </script>
 
 <style lang=scss>
-.logo {
-  width:30%;
 
-  max-width:600px;
-}
 </style>

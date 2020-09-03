@@ -1,20 +1,22 @@
 <template>
 <div id="app">
-  <b-navbar toggleable="lg" type="light"  variant="light">
-    <b-navbar-brand >Groupomania</b-navbar-brand>
+     <header>
+      <h1><img alt="Vue logo" class="logo" src="./assets/images/icon-left-font3.png"></h1>
+    </header>
+  <b-navbar toggleable="md" type="light"  variant="light">
+    <b-navbar-brand ><img alt="navbar logo" src="./assets/images/iconmini.png"></b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"  class="white"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item router-link to="/">Home</b-nav-item>
-        <b-nav-item router-link to="/inscription" v-if="!cookie">Inscription</b-nav-item>
-        <b-nav-item router-link to="/authentification" v-if="!cookie"> Authentification</b-nav-item>
-        <b-nav-item router-link to="/choixModeration" v-if="cookie"> La sélection de la Modération</b-nav-item>
+        
+        <b-nav-item router-link to="/inscription" v-if="!cookie">S'inscrire</b-nav-item>
+        <b-nav-item router-link to="/" v-if="!cookie">Se connecter</b-nav-item>
         <b-nav-item router-link to="/listing" v-if="cookie"> Tous les Messages</b-nav-item>
+        <b-nav-item router-link to="/choixModeration" v-if="cookie"> La sélection</b-nav-item>
         <b-nav-item router-link to="/creation" v-if="cookie"> Créer un message</b-nav-item>
-        <b-nav-item router-link to="/perso" v-if="cookie"> Espace Perso</b-nav-item>
-        <b-nav-item router-link to="/about"> About</b-nav-item>    
+        <b-nav-item router-link to="/perso" v-if="cookie"> Mon profil</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-button class="btn btn-danger" @click="disconnect" v-if="cookie"> Déconnexion </b-button>
@@ -24,13 +26,13 @@
    <router-view/>
        <footer>
       <ul class="list-inline">
-        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="#">FB</a></li>
+        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="/#"><img src="./assets/images/facebookicon.jpg" alt="Logo Facebook"/></a></li>
         <li class="list-inline-item">&middot;</li>
-        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="#">G+</a></li>
+        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="/#"><img src="./assets/images/twitter.png" alt="Logo twitter"/></a></li>
         <li class="list-inline-item">&middot;</li>
-        <li class="list-inline-item"><a class="social-icon text-xs-center" target="_blank" href="#">T</a></li>
+        <li class="list-inline-item"><a class="social-icon text-xs-center" href="/about"><b>A propos</b></a></li>
         <li class="list-inline-item">&middot;</li>
-        <li class="list-inline-item"><a href="mailto:moderation@groupomania.fr" title="Nous contacter">Contactez-nous</a></li>
+        <li class="list-inline-item"><a href="mailto:moderation@groupomania.fr" title="Nous contacter"><b>Contactez-nous</b></a></li>
      </ul>
     </footer>
 </div>
@@ -38,6 +40,7 @@
 
 <script>
 import VueCookies from 'vue-cookies'
+
 export default {
   data(){
     return{
@@ -50,8 +53,7 @@ export default {
       // Pour se déconnecter, On vide le localStorage, on actualise la page et on redirige vers la page d'authentification
       //localStorage.clear();
       VueCookies.remove("jwtToken");
-      VueCookies.remove("userId");
-      VueCookies.remove("isAdmin");
+
       document.location.href = "/";
 
         
@@ -75,8 +77,8 @@ export default {
   color: #2c3e50;
   padding-bottom:125px;
 }
-h1{
-  font-size:2rem;
+.logo{
+  width:300px;
 }
 nav {
   margin-bottom:30px;
@@ -101,6 +103,7 @@ nav {
 .probleme{
   background-color:red;
   color:white;
+  height: 40px;
 }
 
 .text-align{
@@ -145,7 +148,7 @@ footer {
 
 }
 header{
-  background-color:#f8f9fa;
+ background-color:#f8f9fa;
   height:100px;
   text-align:center;
 }

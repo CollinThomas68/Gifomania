@@ -8,7 +8,7 @@
         <p>
       
             Vous avez déjà un compte,
-            <router-link class="redirection-authentification" to="/authentification">Connectez-vous</router-link>
+            <router-link class="redirection-authentification" to="/">Connectez-vous</router-link>
      
         </p>
       </div>
@@ -52,10 +52,10 @@
           rows="4"
           />
         </div>
-            <div v-if="msgError" class="probleme col-lg-6 center marg20">
+        <div v-if="msgError" class="probleme col-lg-6 center marg20">
             {{msgError}}
-    </div>
-        <div class="form__message validation marg20" >{{msg}}</div>
+        </div>
+        <div v-if="msg" class="form__message validation marg20" >{{msg}}</div>
          <button  type="submit" class="btn btn-danger mb-3 mt-3" >Créer mon compte</button>
       </div>
 
@@ -91,7 +91,7 @@ export default {
             console.log(response);
           this.msg ="Votre compte a été correctement crée. Vous allez être redirigé vers la page de connexion!";
           setTimeout(function () {
-            document.location.href = "/authentification";
+            document.location.href = "/";
           }, 3000); 
           })
           .catch(error =>{ console.log(error.response.data.error)
